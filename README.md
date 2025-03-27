@@ -63,3 +63,6 @@ Required data files (not included in repository):
 
 If you use this code, please cite:
 
+## Reference
+This work is based on SPURS ,ThermoMPNN and DePLM. 
+
