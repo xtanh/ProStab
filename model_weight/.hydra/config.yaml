@@ -1,0 +1,104 @@
+experiment_path: null
+name: transformer_training
+train:
+  train: true
+  test: true
+  debug: false
+  force_restart: true
+  ckpt_path: last.ckpt
+  seed: 45
+  lr: 0.01
+  monitor: val/rho_avg_spearman
+  mode: max
+  patience: 20
+print_config: true
+ignore_warnings: true
+seed: 42
+task:
+  _target_: stability/megascale
+  model: ${model}
+  criterion:
+    _target_: prostab.modules.mseloss.MSELoss
+  optimizer:
+    type: adamw
+    _partial_: true
+    lr: 0.0001
+    betas:
+    - 0.9
+    - 0.98
+    weight_decay: 0.01
+  lr_scheduler:
+    type: plateau
+    lr: 0.001
+    factor: 0.2
+    mode: min
+    monitor: val/rho_avg_rmse
+model:
+  _target_: esmfusion
+  esm_name: esm2_t33_650M_UR50D
+  mpnn_name: ProteinMPNN
+  esm_tune: false
+  mpnn_tune: true
+  encoder_mpnn:
+    d_model: 128
+    n_enc_layers: 3
+    n_dec_layers: 3
+    tune: false
+    use_input_decoding_order: true
+  mlp:
+    input_dim: 1792
+    hidden_dim: 1024
+    num_layers: 2
+    output_dim: 21
+    dropout: 0.2
+  dropout: 0.2
+datamodule:
+  _target_: megascale
+  batch_size: 1
+  num_workers: 8
+  pin_memory: true
+  alphabet:
+    name: esm
+    featurizer: megascale
+trainer:
+  _target_: pytorch_lightning.Trainer
+  gpus: 1
+  min_epochs: 1
+  max_epochs: 200
+  enable_progress_bar: true
+  log_every_n_steps: 10
+  resume_from_checkpoint: null
+  strategy: null
+  precision: 16
+  gradient_clip_val: 0.0
+  num_sanity_val_steps: 0
+  check_val_every_n_epoch: 1
+  reload_dataloaders_every_n_epochs: 100000
+  replace_sampler_ddp: false
+  max_steps: 200000
+callbacks:
+  model_summary:
+    _target_: pytorch_lightning.callbacks.RichModelSummary
+    max_depth: -1
+  model_checkpoint:
+    _target_: prostab.utils.callbacks.ModelCheckpoint
+    monitor: ${train.monitor}
+    mode: ${train.mode}
+    save_top_k: 1
+    save_last: true
+    verbose: true
+    dirpath: checkpoints
+    filename: step_{global_step}-${train.monitor}_{${train.monitor}:.2f}
+    auto_insert_metric_name: false
+  early_stopping:
+    _target_: pytorch_lightning.callbacks.EarlyStopping
+    monitor: ${train.monitor}
+    mode: ${train.mode}
+    patience: ${train.patience}
+    min_delta: 0
+    check_on_train_epoch_end: false
+paths:
+  root_dir: ${oc.env:PROJECT_ROOT}
+  data_dir: ${paths.root_dir}/data/
+  log_dir: ${paths.root_dir}/logs/${name}
+  ckpt_dir: ${paths.log_dir}/checkpoints
