@@ -10,7 +10,8 @@ from prostab.models.stability.modules.esm2 import ESM2
 from prostab import utils
 from prostab.models.stability.org_transfer_model import get_protein_mpnn
 import torch.nn.functional as F
-
+from prostab.models.stability.modules.esm2 import ESM2
+# from prostab.models.stability.modules.cross_attention import CrossAttention
 import torch.nn as nn
 from ipdb import set_trace
 
@@ -27,38 +28,8 @@ class FusionConfig:
     esm_tune: bool = True
     mpnn_tune: bool = True
 
-class DimensionReductionWithMultiResidual(nn.Module):
-    def __init__(self, in_dim=1280):
-        super().__init__()
-        self.down1 = nn.Linear(in_dim, 640)
-        self.down2 = nn.Linear(640, 320)
-        self.down3 = nn.Linear(320, 160)
-        
-    
-        self.shortcut = nn.Linear(in_dim, 160)
-        
-        self.dropout = nn.Dropout(0.1)
-        
-        self.final = nn.Linear(160, 1)
-        
-    def forward(self, x):
-        # 主路径
-        h1 = self.down1(x)
-        h1 = F.relu(h1)
-        h1 = self.dropout(h1)
-        
-        h2 = self.down2(h1)
-        h2 = F.relu(h2)
-        h2 = self.dropout(h2)
-        
-        h3 = self.down3(h2)
-        h3 = h3 + self.shortcut(x)  
-        h3 = F.relu(h3)
-        h3 = self.dropout(h3)
-        return self.final(h3)
 
-
-@register_model('prostab')
+@register_model('esmfusion')
 class FusionModel(BaseModel):
     _default_cfg = FusionConfig()
 
@@ -77,6 +48,11 @@ class FusionModel(BaseModel):
         self.use_input_decoding_order = cfg.encoder_mpnn.use_input_decoding_order
         self.mlp = MLP(self.cfg.mlp)
     
+        ######################
+        
+        encoder_layer_esm2 = nn.TransformerEncoderLayer(d_model=1280, nhead=8, dropout=0.1
+                                                        ,dim_feedforward=2560,batch_first=True)
+        self.transformer_encoder_esm2 = nn.TransformerEncoder(encoder_layer_esm2, num_layers=4)
         
         
         
@@ -88,18 +64,23 @@ class FusionModel(BaseModel):
         
         self.ddg_out = nn.Sequential(nn.Linear(2,16),nn.ReLU(),nn.Dropout(0.1),nn.Linear(16,1))
         
+        self.pos_reduction = nn.Sequential(nn.Linear(1280,640),nn.ReLU(),nn.Dropout(0.1),nn.Linear(640,320),nn.ReLU(),nn.Dropout(0.1),nn.Linear(320,160),nn.ReLU(),nn.Dropout(0.1),nn.Linear(160,1))
         
-        self.pos_reduction = DimensionReductionWithMultiResidual(in_dim=1280)
+        
+        
         
         
     def forward(self, batch, **kwargs):
-        # 获取ESM特征和MPNN特征
+        
         with torch.set_grad_enabled(self.cfg.mpnn_tune):
             mpnn_features = self.forward_mpnn(batch)
         
         
         batch['mut_ids'] = batch['mut_ids'] if isinstance(batch['mut_ids'], torch.Tensor) else torch.tensor(batch['mut_ids'])
         shifed_mut_ids = batch['mut_ids'].to(mpnn_features.device)
+        
+        
+        
         
         
         with torch.set_grad_enabled(self.cfg.esm_tune):
@@ -110,11 +91,11 @@ class FusionModel(BaseModel):
             wt_esm2_features = wt_esm2['representations'][-1]
             wt_esm2_features = wt_esm2_features[:,1:-1]
             
-            # 将所有突变体序列堆叠成一个batch
+            
             diff_features_list = []
             for i in range(0,len(batch['mut_tokens']),500):
                 batch_mut_tokens_stacked = torch.cat(batch['mut_tokens'][i:i+500], dim=0)  # [num_mutations, seq_len]
-                # 一次性处理所有突变体
+               
                 mt_esm2 = self.esm_decoder(
                     tokens=batch_mut_tokens_stacked,
                     encoder_out=None,
