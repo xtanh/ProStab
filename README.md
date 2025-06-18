@@ -11,15 +11,6 @@ ProStab, a deep learning framework that integrates sequence-derived and structur
 ![Model Architecture](./assets/model.png)
 
 
-## Requirements
-
-```bash
-torch>=1.12.0
-pytorch-lightning
-hydra-core
-esm
-```
-
 ## Installation
 
 ```bash
@@ -28,7 +19,29 @@ cd ProStab
 # Add installation steps if needed
 ```
 
-## Usage
+## Requirements
+
+```bash
+conda env create -f environment.yml
+conda activate ProStab
+```
+
+## Downloading weights and data
+
+1. Download pre-trained weights from: [Download Link]
+2. Extract and place in `model_weight/checkpoints/`
+
+```bash
+mkdir -p model_weight/checkpoints
+# Place downloaded best.ckpt in model_weight/checkpoints/
+```
+
+### Testing
+
+```bash
+python test.py experiment_path=model_weight  datamodule._target_=megascale data_split=test ckpt_path=model_weight/checkpoints/best.ckpt  mode=predict
+```
+
 
 ### Training
 
@@ -36,18 +49,19 @@ cd ProStab
 python train.py experiment_path=logs/proteinStability
 ```
 
-### Testing
+### Inference
 
 ```bash
-python test.py experiment_path=logs/proteinStability datamodule._target_=megascale data_split=test ckpt_path=logs/proteinStability/checkpoints/best.ckpt mode=predict
+from prostab.inference import  parse_pdb, get_prostab
+model, cfg = get_prostab('./logs/proteinStability')
+pdb_name = 'example'
+pdb_path = '/home/xy_th/PROSTAB/data/inference_example/1A0N.pdb'
+chain = 'A'
+mutation = "V1A"  
+pdb_mut = parse_pdb(pdb_path, pdb_name, chain, cfg, mutation=mutation)
+result_mutant = model(pdb_mut, return_logist=True)
+print(f"mutation {mutation} score: {result_mutant.item()}")
 ```
-
-## Model Architecture
-
-The model consists of three main components:
-1. ESM2 encoder for sequence features
-2. ProteinMPNN encoder for structural features
-3. Fusion module 
 
 ## Data
 
