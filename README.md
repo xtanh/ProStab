@@ -1,4 +1,4 @@
-# ProStab: Protein Stability Prediction
+# ProStab: Prediction of protein stability change upon mutations by inverse folding and protein language models
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white)
 ![Lightning](https://img.shields.io/badge/Lightning-792EE5?logo=lightning&logoColor=white)
 [![arXiv](https://img.shields.io/badge/arXiv-2503.19821-B31B1B)](https://arxiv.org/abs/2503.19821)
@@ -8,7 +8,8 @@ A deep learning model for predicting protein stability changes upon mutations, c
 
 ## Overview
 
-ProStab is a fusion model that leverages both ESM2 and ProteinMPNN to predict protein stability changes (ΔΔG) upon mutations. The model architecture combines sequence-based features from ESM2 and structure-based features from ProteinMPNN through a Transformer module.
+ProStab, a deep learning framework that integrates sequence-derived and structure-informed features for accurate prediction of ∆∆G for protein point mutations given an initial structure. ProStab combines representations from a protein language model23 applied to both wild-type and mutant sequences, and from the inverse folding model ProteinMPNN24 applied to the wild-type structure. It jointly models two sources of information: mutation-specific effects, captured as embedding differences at the substitution site between wild-type and mutant sequences; and site-specific priors, derived from the wild-type sequence and structure, which reflect the local context and substitutional tolerance.
+
 ![Model Architecture](./assets/model.png)
 
 
