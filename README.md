@@ -36,6 +36,14 @@ mkdir -p model_weight/checkpoints
 # Place downloaded best.ckpt in model_weight/checkpoints/
 ```
 
+**ProteinMPNN Weights**
+1. Download ProteinMPNN weights: `v_48_020.pt` from [ProteinMPNN GitHub](https://github.com/dauparas/ProteinMPNN)
+2. Create the directory and place the file:
+```bash
+mkdir -p ./data/checkpoints/ThermoMPNN/vanilla_model_weights
+# Place v_48_020.pt in ./data/checkpoints/ThermoMPNN/vanilla_model_weights/
+```
+
 ### Testing
 
 ```bash
@@ -53,7 +61,7 @@ python train.py experiment_path=logs/proteinStability
 
 ```bash
 from prostab.inference import  parse_pdb, get_prostab
-model, cfg = get_prostab('./logs/proteinStability')
+model, cfg = get_prostab('./model_weight')
 pdb_name = 'example'
 pdb_path = '/home/xy_th/PROSTAB/data/inference_example/1A0N.pdb'
 chain = 'A'
@@ -70,13 +78,21 @@ Required data files (not included in repository):
 - `data/dataset/Domainome/Supplementary_Table_5_aPCA_vs_variant_effect_predictors.csv`
 - `data/dataset/geostab_data/dms/dms.csv` -->
 
+## 📄 License
 
+This project is licensed under the MIT License 
 
-## Results
+## Acknowledgments
 
-[Add your model's performance metrics and comparisons]
+We gratefully acknowledge the following projects and contributions that made ProStab possible:
+
+- **SPURS**: This project builds upon code from [SPURS](https://github.com/luo-group/SPURS/tree/main) by the Luo Group for foundational implementations
+- **ESM**: Protein language models from Meta AI's [ESM repository](https://github.com/facebookresearch/esm)
+- **ProteinMPNN**: Inverse folding model from [Dauparas et al.](https://github.com/dauparas/ProteinMPNN)
 
 ## Citation
 
 If you use this code, please cite:
+
+⭐ **If you find ProStab useful, please star this repository!** ⭐
 
