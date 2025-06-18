@@ -18,7 +18,7 @@ def get_prostab(ckpt_path: str, device: str = 'cuda' if torch.cuda.is_available(
     seed_everything(cfg['train']['seed'])
 
     model = FusionModel(cfg['model']).to(device)
-    ckpt = torch.load(os.path.join(ckpt_path,'./checkpoints/prostab_best.ckpt'), map_location=torch.device('cpu'))['state_dict']
+    ckpt = torch.load(os.path.join(ckpt_path,'./checkpoints/best.ckpt'), map_location=torch.device('cpu'))['state_dict']
     ckpt_remove_model = {k[6:]:v for k, v in ckpt.items() if 'model.' in k}
     model.load_state_dict(ckpt_remove_model, strict=False)    
 
