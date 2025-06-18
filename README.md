@@ -1,7 +1,7 @@
 # ProStab: Protein Stability Prediction
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white)
 ![Lightning](https://img.shields.io/badge/Lightning-792EE5?logo=lightning&logoColor=white)
-[![arXiv](https://img.shields.io/badge/arXiv-2503.19821-B31B1B)]()
+[![arXiv](https://img.shields.io/badge/arXiv-2503.19821-B31B1B)](https://arxiv.org/abs/2503.19821)
 [![Hydra](https://img.shields.io/badge/Hydra-1e90ff?logo=dropbox&logoColor=white)](https://github.com/facebookresearch/hydra)
 
 A deep learning model for predicting protein stability changes upon mutations, combining ESM2 and ProteinMPNN.
@@ -9,7 +9,7 @@ A deep learning model for predicting protein stability changes upon mutations, c
 ## Overview
 
 ProStab is a fusion model that leverages both ESM2 and ProteinMPNN to predict protein stability changes (ΔΔG) upon mutations. The model architecture combines sequence-based features from ESM2 and structure-based features from ProteinMPNN through a Transformer module.
-
+![Model Architecture](./assets/model.png)
 
 
 ## Requirements
