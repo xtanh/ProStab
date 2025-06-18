@@ -1,4 +1,8 @@
 # ProStab: Protein Stability Prediction
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white)
+![Lightning](https://img.shields.io/badge/Lightning-792EE5?logo=lightning&logoColor=white)
+[![arXiv](https://img.shields.io/badge/arXiv-2503.19821-B31B1B)](https://arxiv.org/abs/2503.19821)
+![Hydra](https://img.shields.io/badge/Hydra-1e90ff?logo=dropbox&logoColor=white)
 
 A deep learning model for predicting protein stability changes upon mutations, combining ESM2 and ProteinMPNN.
 
