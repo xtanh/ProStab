@@ -1,7 +1,7 @@
 # ProStab: Prediction of protein stability change upon mutations by inverse folding and protein language models
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white)
 ![Lightning](https://img.shields.io/badge/Lightning-792EE5?logo=lightning&logoColor=white)
-[![arXiv](https://img.shields.io/badge/arXiv-2503.19821-B31B1B)](https://arxiv.org/abs/2503.19821)
+[![arXiv](https://img.shields.io/badge/arXiv-2503.19821-B31B1B)]()
 [![Hydra](https://img.shields.io/badge/Hydra-1e90ff?logo=dropbox&logoColor=white)](https://github.com/facebookresearch/hydra)
 
 ## Overview
