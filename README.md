@@ -28,7 +28,7 @@ conda activate ProStab
 
 ## Downloading weights and data
 
-1. Download pre-trained weights from: [Download Link]
+1. Download pre-trained weights from: [https://drive.google.com/file/d/1xZOG3wkn6UGJS_j533laRbZLWV5DU13T/view?usp=share_link]
 2. Extract and place in `model_weight/checkpoints/`
 
 ```bash
