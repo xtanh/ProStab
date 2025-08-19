@@ -1,7 +1,7 @@
 # ProStab: Prediction of protein stability change upon mutations by inverse folding and protein language models
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white)
 ![Lightning](https://img.shields.io/badge/Lightning-792EE5?logo=lightning&logoColor=white)
-[![arXiv](https://img.shields.io/badge/arXiv-25-B31B1B)]()
+[![arXiv](https://img.shields.io/badge/arXiv-25-B31B1B)](https://www.biorxiv.org/content/10.1101/2025.08.11.669595v1)
 [![Hydra](https://img.shields.io/badge/Hydra-1e90ff?logo=dropbox&logoColor=white)](https://github.com/facebookresearch/hydra)
 
 ## Overview
@@ -10,6 +10,9 @@ ProStab, a deep learning framework that integrates sequence-derived and structur
 
 ![Model Architecture](./assets/model.png)
 
+## Web server
+
+[ProStab web server](https://ails.sjtu.edu.cn/prostab/)
 
 ## Installation
 
@@ -82,7 +85,7 @@ Required data files (not included in repository):
 
 This project is licensed under the MIT License 
 
-
+```bash
 Copyright (c) 2025 Hong Tan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -102,6 +105,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
 
 ## Acknowledgments
 
@@ -114,6 +118,7 @@ We gratefully acknowledge the following projects and contributions that made Pro
 ## Citation
 
 If you use this code, please cite:
-
+Hong Tan, Xiaowei Wei, Shenggeng Lin, Xueying Mao, Junwei Chen, Heqi Sun, Yufang Zhang, Zhenghong Zhou, Dong-Qing Wei, Shuangjun Lin, Yi Xiong
+bioRxiv 2025.08.11.669595; doi: https://doi.org/10.1101/2025.08.11.669595
 ⭐ **If you find ProStab useful, please star this repository!** ⭐
 
