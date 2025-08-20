@@ -16,6 +16,7 @@ ProStab, a deep learning framework that integrates sequence-derived and structur
 [ProStab web server](https://ails.sjtu.edu.cn/prostab/)
 
 ⭐ **Ongoing updates will keep making this web server easier and more convenient to use.** ⭐
+
 ⭐ **Coming soon: Thermal stability prediction for multiple mutations and indels.** ⭐
 
 ## Installation
