@@ -8,8 +8,8 @@ defaults:
   - hydra: default
 
 # 实验配置
-experiment_path: logs/proteinStability
-name: "proteinStability"
+experiment_path: logs/proteinStability_fusion_diff
+name: "proteinStability_fusion_diff"
 
 # 训练参数
 train:
@@ -50,10 +50,10 @@ task:
 
 # 模型配置
 model:
-  _target_: prostab
+  _target_: esm_fusion
   esm_name: 'esm2_t33_650M_UR50D'
   mpnn_name: 'ProteinMPNN'
-  esm_tune: false 
+  esm_tune: False
   mpnn_tune: True
   encoder_mpnn:
     d_model: 128
@@ -82,7 +82,7 @@ datamodule:
   
 trainer:
   _target_: pytorch_lightning.Trainer
-  gpus: [3]
+  gpus: [2]
   min_epochs: 1
   max_epochs: 200
   enable_progress_bar: true
