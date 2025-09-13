@@ -4,6 +4,10 @@
 [![arXiv](https://img.shields.io/badge/arXiv-25-B31B1B)](https://www.biorxiv.org/content/10.1101/2025.08.11.669595v1)
 [![Hydra](https://img.shields.io/badge/Hydra-1e90ff?logo=dropbox&logoColor=white)](https://github.com/facebookresearch/hydra)
 
+## Acknowledgements
+We sincerely thank the SPURS team for open-sourcing their code and data to the community. ProStab is built upon the SPURS framework, and we are grateful to the SPURS team for providing invaluable constructive feedback and guidance throughout this work.
+
+
 ## Overview
 
 ProStab, a deep learning framework that integrates sequence-derived and structure-informed features for accurate prediction of ∆∆G for protein point mutations given an initial structure. ProStab combines representations from a protein language model applied to both wild-type and mutant sequences, and from the inverse folding model ProteinMPNN applied to the wild-type structure. It jointly models two sources of information: mutation-specific effects, captured as embedding differences at the substitution site between wild-type and mutant sequences; and site-specific priors, derived from the wild-type sequence and structure, which reflect the local context and substitutional tolerance.
