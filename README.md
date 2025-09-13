@@ -86,46 +86,67 @@ Required data files (not included in repository):
 - `data/dataset/Domainome/Supplementary_Table_5_aPCA_vs_variant_effect_predictors.csv`
 - `data/dataset/geostab_data/dms/dms.csv` -->
 
+
 ## 📄 License
 
-This project is licensed under the MIT License 
+This project builds heavily upon **SPURS**. Please refer to their [original license](https://github.com/luo-group/SPURS) for more details.
 
-```bash
-Copyright (c) 2025 Hong Tan
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-## Acknowledgments
+## 🙏 Acknowledgments
 
 We gratefully acknowledge the following projects and contributions that made ProStab possible:
 
-- **SPURS**: This project builds upon code from [SPURS](https://github.com/luo-group/SPURS/tree/main) by the Luo Group for foundational implementations
-- **ESM**: Protein language models from Meta AI's [ESM repository](https://github.com/facebookresearch/esm)
+### Foundation Framework
+**Important Note**: This project is significantly based on the **SPURS** framework. We gratefully acknowledge that:
+
+- **Benchmark Datasets**: All evaluation datasets originate from SPURS
+- **Training Strategy**: Our training methodology follows SPURS protocols  
+- **Evaluation Framework**: Assessment metrics and procedures are consistent with SPURS
+- **Code Foundation**: The training and evaluation framework is built upon SPURS
+
+We sincerely thank the SPURS team for providing an extensible training, evaluation, and modeling framework that enabled this research.
+
+### Key Components
+- **SPURS**: Foundational framework from [Luo Group](https://github.com/luo-group/SPURS/tree/main)
+- **ESM**: Protein language models from [Meta AI](https://github.com/facebookresearch/esm)
 - **ProteinMPNN**: Inverse folding model from [Dauparas et al.](https://github.com/dauparas/ProteinMPNN)
 
-## Citation
+## 📚 Citation
 
-If you use this code, please cite:
+If you use ProStab in your research, please cite our work and the foundational papers:
 
-Hong Tan, Xiaowei Wei, Shenggeng Lin, Xueying Mao, Junwei Chen, Heqi Sun, Yufang Zhang, Zhenghong Zhou, Dong-Qing Wei, Shuangjun Lin, Yi Xiong
-bioRxiv 2025.08.11.669595; doi: https://doi.org/10.1101/2025.08.11.669595
+```bibtex
+@article{prostab2025,
+  title={ProStab: Prediction of protein stability change upon mutations by inverse folding and protein language models},
+  author={Tan, Hong and Wei, Xiaowei and Lin, Shenggeng and Mao, Xueying and Chen, Junwei and Sun, Heqi and Zhang, Yufang and Zhou, Zhenghong and Wei, Dong-Qing and Lin, Shuangjun and Xiong, Yi},
+  journal={bioRxiv},
+  year={2025},
+  doi={10.1101/2025.08.11.669595},
+  url={https://doi.org/10.1101/2025.08.11.669595}
+}
+
+@inproceedings{spurs2025,
+  title={Rewiring protein sequence and structure generative models to enhance protein stability prediction},
+  author={Li, Ziang and Luo, Yunan},
+  booktitle={International Conference on Research in Computational Molecular Biology},
+  pages={255--259},
+  year={2025},
+  organization={Springer}
+}
+
+@article{thermompnn2024,
+  title={Transfer learning to leverage larger datasets for improved prediction of protein stability changes},
+  author={Dieckhaus, Henry and Brocidiacono, Michael and Randolph, Nicholas Z. and Kuhlman, Brian},
+  journal={Proceedings of the National Academy of Sciences},
+  volume={121},
+  number={6},
+  pages={e2314853121},
+  year={2024},
+  doi={10.1073/pnas.2314853121},
+  url={https://www.pnas.org/doi/abs/10.1073/pnas.2314853121}
+}
+```
+
+---
 
 ⭐ **If you find ProStab useful, please star this repository!** ⭐
 
