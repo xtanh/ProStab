@@ -17,6 +17,12 @@ from prostab import utils
 log = utils.get_logger(__name__)
 import json
 
+'''
+Adapted from SPURS
+https://github.com/luo-group/SPURS/blob/9cf686eb8304740775c4cfdd2437d36a96e97732/spurs/datamodules/datasets/fireprot.py
+
+'''
+
 ALPAHBET = 'ACDEFGHIKLMNPQRSTVWYX'
 
 class FireProtDataset(torch.utils.data.Dataset):

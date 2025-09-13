@@ -21,6 +21,12 @@ from .data_utils import Alphabet
 from collections import defaultdict
 ALPAHBET = 'ACDEFGHIKLMNPQRSTVWYX'
 
+'''
+Adapted from SPURS
+https://github.com/luo-group/SPURS/blob/9cf686eb8304740775c4cfdd2437d36a96e97732/spurs/datamodules/datasets/ddgbench.py
+'''
+
+
 class ddgBenchDataset(torch.utils.data.Dataset):
 
     def __init__(self, pdb_dir, csv_fname, dataset_name):

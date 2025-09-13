@@ -26,6 +26,11 @@ from collections import defaultdict
 import math
 import random
             
+'''
+Adapted from SPURS
+https://github.com/luo-group/SPURS/blob/9cf686eb8304740775c4cfdd2437d36a96e97732/spurs/datamodules/datasets/megascale.py
+
+'''
 
 class MegaScaleDataset(torch.utils.data.Dataset):
 
@@ -416,6 +421,8 @@ class MegaScaleTestDatasets(torch.utils.data.Dataset):
         # return self.p53.__len__()
         # return self.myo.__len__()
         # return self.ta41.__len__()
+        # return  self.s669.__len__() + self.S461.__len__() + self.S783.__len__() + self.S571.__len__() + self.S8754.__len__() + self.S2648.__len__() + self.S4346.__len__()
+
     def __getitem__(self, index):
 
         # if index < self.megascale.__len__():
@@ -435,6 +442,8 @@ class MegaScaleTestDatasets(torch.utils.data.Dataset):
         index -= self.s669.__len__()
         # if index < self.ta41.__len__():
         #     return self.ta41.__getitem__(index)
+        
+        #########################################################
         # if index < self.S461.__len__():
         #     return self.S461.__getitem__(index)
         # index -= self.S461.__len__()
@@ -454,6 +463,8 @@ class MegaScaleTestDatasets(torch.utils.data.Dataset):
         #     return self.S4346.__getitem__(index)
         # if index < self.p53.__len__():
         #     return self.p53.__getitem__(index)
+        
+        #########################################################
         # if index < self.myo.__len__():
         #     return self.myo.__getitem__(index)
         
