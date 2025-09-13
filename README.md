@@ -5,7 +5,11 @@
 [![Hydra](https://img.shields.io/badge/Hydra-1e90ff?logo=dropbox&logoColor=white)](https://github.com/facebookresearch/hydra)
 
 ## Acknowledgements
-We sincerely thank the SPURS team for open-sourcing their code and data to the community. ProStab is built upon the SPURS framework, and we are grateful to the SPURS team for providing invaluable constructive feedback and guidance throughout this work.
+We sincerely thank the SPURS team for open-sourcing their code and data to the community, and we are grateful to the SPURS team for providing invaluable constructive feedback and guidance throughout this work.
+
+ProStab project builds heavily off of SPURS, and the training pipeline, test pipeline,
+dataset, configs, baselines, and metrics implementation were adapted from SPURS
+
 
 
 ## Overview
