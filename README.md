@@ -19,6 +19,8 @@ ProStab, a deep learning framework that integrates sequence-derived and structur
 
 ⭐ **Coming soon: Thermal stability prediction for multiple mutations and indels.** ⭐
 
+⭐ **We encourage users of our web server to cite both ProStab and SPURS in recognition of the foundational framework and valuable collaborative insights provided by the SPURS team** ⭐
+
 ## Installation
 
 ```bash
