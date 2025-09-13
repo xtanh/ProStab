@@ -10,6 +10,10 @@ from prostab import utils
 from .datasets.ddggeo import ddgGeo
 log = utils.get_logger(__name__)
 
+'''
+Adapted from SPURS
+https://github.com/luo-group/SPURS/blob/9cf686eb8304740775c4cfdd2437d36a96e97732/spurs/datamodules/megascale_datamodule.py
+'''
 
 @register_datamodule('megascale')
 class MegaScaleModule(LightningDataModule):
