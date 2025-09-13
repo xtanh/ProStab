@@ -7,6 +7,11 @@ from dataclasses import dataclass,field
 from prostab.models.stability.basemodel import BaseModel
 from typing import List, Union
 
+'''
+adpated from SPURS
+https://github.com/luo-group/SPURS/blob/9cf686eb8304740775c4cfdd2437d36a96e97732/spurs/models/stability/mlp.py
+'''
+
 @dataclass
 class MLPConfig:
     input_dim: int = 1792

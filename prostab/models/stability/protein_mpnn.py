@@ -9,6 +9,10 @@ from prostab.datamodules.datasets.data_utils import Alphabet
 # from .decoder import MPNNSequenceDecoder
 # from .encoder import MPNNEncoder
 
+'''
+Adapted from SPURS
+https://github.com/luo-group/SPURS/blob/9cf686eb8304740775c4cfdd2437d36a96e97732/spurs/models/stability/protein_mpnn.py
+'''
 
 @dataclass
 class ProteinMPNNConfig:
