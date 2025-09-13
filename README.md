@@ -91,7 +91,7 @@ Required data files (not included in repository):
 
 This project builds heavily upon **SPURS**. Please refer to their [original license](https://github.com/luo-group/SPURS) for more details.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 We gratefully acknowledge the following projects and contributions that made ProStab possible:
 
