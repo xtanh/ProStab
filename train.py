@@ -7,6 +7,13 @@ import shutil
 
 import pyrootutils
 
+
+'''
+Adapted from SPURS
+https://github.com/luo-group/SPURS/blob/9cf686eb8304740775c4cfdd2437732/spurs/train.py
+'''
+
+
 # 添加项目根目录到 Python 路径
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 

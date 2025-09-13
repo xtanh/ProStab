@@ -1,7 +1,10 @@
 #!python
 # https://github.com/BytedProtein/ByProt/blob/dd279dc85f76ee2c28c819b71bf3911b90159f0a/test.py
 
-
+'''
+Adapted from SPURS
+https://github.com/luo-group/SPURS/blob/9cf686eb8304740775c4cfdd2437732/spurs/test.py
+'''
 import pyrootutils
 
 root = pyrootutils.setup_root(
