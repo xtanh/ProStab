@@ -1,6 +1,0 @@
-data/dataset/megascale/Tsuboyama2023_Dataset2_Dataset3_20230416.csv
-data/dataset/Domainome/Supplementary_Table_5_aPCA_vs_variant_effect_predictors.csv
-data/dataset/geostab_data/dms/dms.csv
-checkpoints/
-model_weight/checkpoints/
-logs/
