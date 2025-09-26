@@ -16,6 +16,8 @@ dataset, configs, baselines, and metrics implementation were adapted from SPURS
 
 
 
+
+
 ## Overview
 
 ProStab, a deep learning framework that integrates sequence-derived and structure-informed features for accurate prediction of ∆∆G for protein point mutations given an initial structure. ProStab combines representations from a protein language model applied to both wild-type and mutant sequences, and from the inverse folding model ProteinMPNN applied to the wild-type structure. It jointly models two sources of information: mutation-specific effects, captured as embedding differences at the substitution site between wild-type and mutant sequences; and site-specific priors, derived from the wild-type sequence and structure, which reflect the local context and substitutional tolerance.
@@ -120,6 +122,7 @@ We sincerely thank the SPURS team for providing an extensible training, evaluati
 
 ### Key Components
 - **SPURS**: Foundational framework from [Luo Group](https://github.com/luo-group/SPURS/tree/main)
+- **ProMEP**: Transformer encoder fuse strutural information and sequence information [Cheng et al](https://github.com/wenjiegroup/ProMEP)
 - **ESM**: Protein language models from [Meta AI](https://github.com/facebookresearch/esm)
 - **ProteinMPNN**: Inverse folding model from [Dauparas et al.](https://github.com/dauparas/ProteinMPNN)
 
@@ -185,6 +188,19 @@ Our work is based on the following papers.
   doi={10.1073/pnas.2314853121},
   url={https://www.pnas.org/doi/abs/10.1073/pnas.2314853121}
 }
+
+
+@article{cheng2024zero,
+  title={Zero-shot prediction of mutation effects with multimodal deep representation learning guides protein engineering},
+  author={Cheng, Peng and Mao, Cong and Tang, Jin and Yang, Sen and Cheng, Yu and Wang, Wuke and Gu, Qiuxi and Han, Wei and Chen, Hao and Li, Sihan and others},
+  journal={Cell Research},
+  volume={34},
+  number={9},
+  pages={630--647},
+  year={2024},
+  publisher={Springer Nature Singapore Singapore}
+}
+
 
 @article{rives2021biological,
   title={Biological structure and function emerge from scaling unsupervised learning to 250 million protein sequences},
