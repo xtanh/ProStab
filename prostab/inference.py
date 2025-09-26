@@ -29,15 +29,15 @@ def get_prostab(ckpt_path: str, device: str = 'cuda' if torch.cuda.is_available(
     
 
 def parse_pdb(pdb_path: str, pdb_name: str, chain: str, cfg, mutation=None ,device: str = 'cuda' if torch.cuda.is_available() else 'cpu'):
-    """处理pdb结构，支持指定突变
+    """process pdb structure, support specified mutation
 
     Args:
-        pdb_path (str): pdb文件路径
-        pdb_name (str): pdb名称
-        chain (str): 链ID
-        cfg (_type_): 配置信息
-        mutation (_type_, optional): 突变信息，格式如“S11A”表示将第11位丝氨酸突变为丙氨酸
-        device (str, optional): 计算设备. Defaults to 'cuda'iftorch.cuda.is_available()else'cpu'.
+        pdb_path (str)
+        pdb_name (str)
+        chain (str)
+        cfg (_type_)
+        mutation (_type_, optional): mutation information, format like "S11A" means to mutate the 11th serine to alanine
+        device (str, optional): device for computation. Defaults to 'cuda'iftorch.cuda.is_available()else'cpu'.
     """
     ALPAHBET = 'ACDEFGHIKLMNPQRSTVWYX'
     
@@ -53,17 +53,17 @@ def parse_pdb(pdb_path: str, pdb_name: str, chain: str, cfg, mutation=None ,devi
         
         try:
             pdb_idx = resn_list.index(pos)
-            assert original_seq[pdb_idx] == wtAA, f"序列不匹配：期望 {wtAA}，实际为 {original_seq[pdb_idx]}"
+            assert original_seq[pdb_idx] == wtAA, f"sequence mismatch: expected {wtAA}, actual {original_seq[pdb_idx]}"
             
             # 创建突变序列
             mut_sequence = list(original_seq)
             mut_sequence[pdb_idx] = mutAA
             mut_sequence = ''.join(mut_sequence)
             
-            # 设置突变ID
+            # set mutation ID
             pdb['mut_ids'] = torch.tensor([pdb_idx])
             
-            # 生成one-hot编码向量
+            # generate one-hot encoding vector
             wt_onehot = torch.zeros((21))
             wt_onehot[ALPAHBET.index(wtAA)] = 1
             mt_onehot = torch.zeros((21))
@@ -73,12 +73,12 @@ def parse_pdb(pdb_path: str, pdb_name: str, chain: str, cfg, mutation=None ,devi
             pdb['append_tensors'] = append_tensor.float().unsqueeze(0)
             pdb['mut_seq'] = [mut_sequence]
         except ValueError:
-            print(f"警告：无法在PDB中找到残基位置 {pos}")
+            print(f"warning: cannot find residue position {pos} in PDB")
             pdb['mut_ids'] = torch.tensor([0])
             pdb['append_tensors'] = torch.zeros((1, 42))
             pdb['mut_seq'] = [original_seq]
     else:
-        # 没有突变，使用默认值
+        # no mutation, use default value
         pdb['mut_ids'] = torch.tensor([0])
         pdb['append_tensors'] = torch.zeros((1, 42))
         pdb['mut_seq'] = [original_seq]

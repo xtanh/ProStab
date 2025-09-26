@@ -11,7 +11,7 @@ defaults:
 experiment_path: logs/proteinStability_fusion_diff
 name: "proteinStability_fusion_diff"
 
-# 训练参数
+# parameters for training
 train:
   train: True
   test: True
@@ -24,12 +24,12 @@ train:
   mode:  max
   patience: 20
 
-# 其他设置
+# other settings
 print_config: True
 ignore_warnings: True
 seed: 42
 
-# 任务配置
+# task configuration
 task:
   _target_: stability/megascale
   model: ${model}
@@ -48,7 +48,7 @@ task:
     mode: min
     monitor: val/rho_avg_rmse
 
-# 模型配置
+# model configuration
 model:
   _target_: esmfusion
   esm_name: 'esm2_t33_650M_UR50D'
@@ -69,7 +69,7 @@ model:
     dropout: 0.2
   dropout: 0.2
 
-# 数据模块配置
+# data module configuration
 datamodule:
   _target_: megascale
   batch_size: 1
