@@ -50,7 +50,7 @@ task:
 
 # 模型配置
 model:
-  _target_: esm_fusion
+  _target_: esmfusion
   esm_name: 'esm2_t33_650M_UR50D'
   mpnn_name: 'ProteinMPNN'
   esm_tune: False
