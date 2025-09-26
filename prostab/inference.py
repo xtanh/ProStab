@@ -9,7 +9,7 @@ from prostab.datamodules.datasets.utils import get_pdb
 from prostab.datamodules.datasets.data_utils import Alphabet
 from prostab.models.stability.prostab import FusionModel
 
-
+# adpated from https://github.com/luo-group/SPURS/blob/main/spurs/inference.py
 
 def get_prostab(ckpt_path: str, device: str = 'cuda' if torch.cuda.is_available() else 'cpu') -> torch.nn.Module:
     cfg = OmegaConf.load(os.path.join(ckpt_path,'.hydra/config.yaml'))
@@ -55,7 +55,7 @@ def parse_pdb(pdb_path: str, pdb_name: str, chain: str, cfg, mutation=None ,devi
             pdb_idx = resn_list.index(pos)
             assert original_seq[pdb_idx] == wtAA, f"sequence mismatch: expected {wtAA}, actual {original_seq[pdb_idx]}"
             
-            # 创建突变序列
+            # generate mutated sequence
             mut_sequence = list(original_seq)
             mut_sequence[pdb_idx] = mutAA
             mut_sequence = ''.join(mut_sequence)
