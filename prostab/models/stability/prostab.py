@@ -44,7 +44,7 @@ class FusionConfig:
     mpnn_tune: bool = True
 
 
-@register_model('esm_fusion')
+@register_model('esmfusion')
 class FusionModel(BaseModel):
     _default_cfg = FusionConfig()
 
