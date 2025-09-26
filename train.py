@@ -13,8 +13,7 @@ Adapted from SPURS
 https://github.com/luo-group/SPURS/blob/9cf686eb8304740775c4cfdd2437732/spurs/train.py
 '''
 
-
-# 添加项目根目录到 Python 路径
+# add project root directory to Python path
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 root = pyrootutils.setup_root(
@@ -30,12 +29,12 @@ root = pyrootutils.setup_root(
 @hydra.main(config_path=f"{root}/configs", config_name="train.yaml")
 def main(cfg: DictConfig):
     """
-    训练 SPURS 模型的主函数
+    main function to train SPURS model
     
     Args:
-        cfg: Hydra 配置对象
+        cfg: Hydra configuration object
     """
-    # 导入必要的模块
+    # import necessary modules
     from prostab import utils
     from prostab.training_pipeline import train
     
@@ -44,7 +43,7 @@ def main(cfg: DictConfig):
     
     cfg = utils.extras(cfg)
     
-    # 开始训练
+    
     return train(cfg)
 
 if __name__ == "__main__":
