@@ -4,6 +4,10 @@
 [![arXiv](https://img.shields.io/badge/arXiv-25-B31B1B)](https://www.biorxiv.org/content/10.1101/2025.08.11.669595v1)
 [![Hydra](https://img.shields.io/badge/Hydra-1e90ff?logo=dropbox&logoColor=white)](https://github.com/facebookresearch/hydra)
 
+## News
+
+⭐ **Coming soon: Protein stability prediction for multiple mutations and indels(insert and delete).** ⭐
+
 ## Acknowledgements
 We sincerely thank the SPURS team for open-sourcing their code and data to the community, and we are grateful to the SPURS team for providing invaluable constructive feedback and guidance throughout this work.
 
@@ -25,7 +29,6 @@ ProStab, a deep learning framework that integrates sequence-derived and structur
 
 ⭐ **Ongoing updates will keep making this web server easier and more convenient to use.** ⭐
 
-⭐ **Coming soon: Thermal stability prediction for multiple mutations and indels.** ⭐
 
 ⭐ **We encourage users of our web server to cite both ProStab and SPURS in recognition of the foundational framework and valuable collaborative insights provided by the SPURS team** ⭐
 
