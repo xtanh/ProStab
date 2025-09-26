@@ -29,8 +29,7 @@ root = pyrootutils.setup_root(
 @hydra.main(config_path=f"{root}/configs", config_name="train.yaml")
 def main(cfg: DictConfig):
     """
-    main function to train SPURS model
-    
+    train ProStab
     Args:
         cfg: Hydra configuration object
     """
