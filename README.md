@@ -75,7 +75,7 @@ python test.py experiment_path=model_weight  datamodule._target_=megascale data_
 ### Training
 
 ```bash
-python train.py experiment_path=logs/proteinStability
+python train.py 
 ```
 
 ### Inference
