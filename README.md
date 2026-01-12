@@ -9,7 +9,7 @@
 ⭐ **Coming soon: Protein stability prediction for multiple mutations and indels(insert and delete).** ⭐
 
 ## Acknowledgements
-We sincerely thank the SPURS team for open-sourcing their code and data to the community, and we are grateful to the SPURS team for providing invaluable constructive feedback and guidance throughout this work.
+We sincerely thank the SPURS team for open-sourcing their code and data to the community, and we are grateful to the SPURS team for providing invaluable constructive feedback and guidance throughout this work.[SPURS, Li et al.](https://github.com/luo-group/SPURS/tree/main)
 
 ProStab project builds heavily off of SPURS, and the training pipeline, test pipeline,
 dataset, configs, baselines, and metrics implementation were adapted from SPURS
@@ -140,13 +140,12 @@ If you use ProStab in your research, please cite our work and the foundational p
   url={https://doi.org/10.1101/2025.08.11.669595}
 }
 
-@inproceedings{spurs2025,
-  title={Rewiring protein sequence and structure generative models to enhance protein stability prediction},
+@article{li2025generalizable,
+  title={Generalizable and scalable protein stability prediction with rewired protein generative models},
   author={Li, Ziang and Luo, Yunan},
-  booktitle={International Conference on Research in Computational Molecular Biology},
-  pages={255--259},
+  journal={Nature Communications},
   year={2025},
-  organization={Springer}
+  publisher={Nature Publishing Group UK London}
 }
 
 @article{thermompnn2024,
@@ -168,13 +167,12 @@ Our work is based on the following papers.
 ```bibtex
 
 
-@inproceedings{spurs2025,
-  title={Rewiring protein sequence and structure generative models to enhance protein stability prediction},
+@article{li2025generalizable,
+  title={Generalizable and scalable protein stability prediction with rewired protein generative models},
   author={Li, Ziang and Luo, Yunan},
-  booktitle={International Conference on Research in Computational Molecular Biology},
-  pages={255--259},
+  journal={Nature Communications},
   year={2025},
-  organization={Springer}
+  publisher={Nature Publishing Group UK London}
 }
 
 @article{thermompnn2024,
