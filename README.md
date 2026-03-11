@@ -6,7 +6,7 @@
 
 ## News
 
-⭐ **Coming soon: Protein stability prediction for multiple mutations and indels(insert and delete).** ⭐
+⭐ **Protein stability prediction for multiple mutations and indels (insert and delete) is now available: [UniStab](https://github.com/xlab-BioAI/UniStab).** ⭐
 
 ## Acknowledgements
 We sincerely thank the SPURS team for open-sourcing their code and data to the community, and we are grateful to the SPURS team for providing invaluable constructive feedback and guidance throughout this work.
