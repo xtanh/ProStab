@@ -29,9 +29,9 @@ ProStab, a deep learning framework that integrates sequence-derived and structur
 ## Web server
 [ProStab web server](https://ails.sjtu.edu.cn/prostab/)
 
-⭐ **Ongoing updates will keep making this web server easier and more convenient to use.** ⭐
-
 ⭐ **If you find ProStab useful, please star this repository!** ⭐
+
+⭐ **Ongoing updates will keep making this web server easier and more convenient to use.** ⭐
 
 ⭐ **We encourage users of our web server to cite both ProStab and SPURS in recognition of the foundational framework and valuable collaborative insights provided by the SPURS team** ⭐
 
