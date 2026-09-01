@@ -6,7 +6,8 @@
 
 ## News
 
-⭐ **Protein stability prediction for multiple mutations and indels (insert and delete) is now available: [UniStab](https://github.com/xlab-BioAI/UniStab).** ⭐
+ **Protein stability prediction for multiple mutations and indels (insert and delete) is now available: [UniStab](https://github.com/xlab-BioAI/UniStab).** 
+[ProStab web server](https://ails.sjtu.edu.cn/prostab/)
 
 ## Acknowledgements
 We sincerely thank the SPURS team for open-sourcing their code and data to the community, and we are grateful to the SPURS team for providing invaluable constructive feedback and guidance throughout this work.
@@ -15,15 +16,11 @@ ProStab project builds heavily off of [SPURS](https://github.com/luo-group/SPURS
 dataset, configs, baselines, and metrics implementation were adapted from SPURS
 
 
-
-
-
 ## Overview
 
 ProStab, a deep learning framework that integrates sequence-derived and structure-informed features for accurate prediction of ∆∆G for protein point mutations given an initial structure. ProStab combines representations from a protein language model applied to both wild-type and mutant sequences, and from the inverse folding model ProteinMPNN applied to the wild-type structure. It jointly models two sources of information: mutation-specific effects, captured as embedding differences at the substitution site between wild-type and mutant sequences; and site-specific priors, derived from the wild-type sequence and structure, which reflect the local context and substitutional tolerance.
 
 ![Model Architecture](assets/model.png)
-
 
 
 ## Web server
