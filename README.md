@@ -1,12 +1,44 @@
-# ProStab
+<h1 align="center">ProStab</h1>
 
-Predict protein stability changes (ΔΔG) for **single amino-acid substitutions**
-using a wild-type PDB structure, ProteinMPNN and ESM2 representations.
+<p align="center">
+  <strong>Protein stability prediction with inverse folding and protein language models</strong>
+</p>
 
-**[Use the online server](https://ails.sjtu.edu.cn/prostab/)** — no local installation required.
-For multiple substitutions and insertions/deletions, see [UniStab](https://github.com/xlab-BioAI/UniStab).
+<p align="center">
+  <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&amp;logo=pytorch&amp;logoColor=white" alt="PyTorch"></a>
+  <a href="https://lightning.ai/"><img src="https://img.shields.io/badge/Lightning-792EE5?style=flat-square&amp;logo=lightning&amp;logoColor=white" alt="Lightning"></a>
+  <a href="https://www.biorxiv.org/content/10.1101/2025.08.11.669595v1"><img src="https://img.shields.io/badge/bioRxiv-2025-B31B1B?style=flat-square" alt="bioRxiv paper"></a>
+  <a href="https://github.com/facebookresearch/hydra"><img src="https://img.shields.io/badge/Hydra-1e90ff?style=flat-square" alt="Hydra"></a>
+</p>
 
-![Model architecture](assets/model.png)
+<p align="center">
+  <a href="https://ails.sjtu.edu.cn/prostab/"><strong>Web server</strong></a> ·
+  <a href="https://www.biorxiv.org/content/10.1101/2025.08.11.669595v1">Paper</a> ·
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#python-api">Python API</a> ·
+  <a href="#citation">Citation</a>
+</p>
+
+Predict stability changes (ΔΔG) for **single amino-acid substitutions** from a
+wild-type PDB structure. ProStab combines ProteinMPNN structural representations
+with ESM2 sequence representations.
+
+<p align="center">
+  <img src="assets/model.png" alt="ProStab model architecture: integration of sequence and structural representations" width="900">
+</p>
+
+### Choose how to use ProStab
+
+| Interface | Get started |
+| --- | --- |
+| 🌐 **Web server** | [Upload a structure and predict online](https://ails.sjtu.edu.cn/prostab/) |
+| 💻 **Command line** | [Run a single prediction](#quick-start) or [process a CSV](#batch-predictions) |
+| 🐍 **Python** | [Use ProStab in your own scripts](#python-api) |
+
+> **Explore UniStab:** for multiple substitutions and insertions/deletions,
+> see [our related project](https://github.com/xlab-BioAI/UniStab).
+
+---
 
 ## Quick start
 
@@ -152,7 +184,7 @@ Training requires the original data and configuration.
 
 This project builds heavily upon **SPURS**. Please refer to their [original license](https://github.com/luo-group/SPURS) for more details.
 
-##  Acknowledgments
+## Acknowledgments
 
 We gratefully acknowledge the following projects and contributions that made ProStab possible:
 
@@ -161,10 +193,13 @@ metrics are adapted from [SPURS](https://github.com/luo-group/SPURS).
 We thank the SPURS team for their code, data, feedback and guidance.
 
 ### Key Components
+
 - **SPURS**: Foundational framework from [Luo Group](https://github.com/luo-group/SPURS/tree/main)
 - **ProMEP**: Transformer-based fusion of structural and sequence information [Cheng et al](https://github.com/wenjiegroup/ProMEP)
 - **ESM**: Protein language models from [Meta AI](https://github.com/facebookresearch/esm)
 - **ProteinMPNN**: Inverse folding model from [Dauparas et al.](https://github.com/dauparas/ProteinMPNN)
+
+<a id="citation"></a>
 
 ## 📚 Citation
 
