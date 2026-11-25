@@ -5,19 +5,13 @@ using a wild-type PDB structure, ProteinMPNN and ESM2 representations.
 
 **[Use the online server](https://ails.sjtu.edu.cn/prostab/)** — no local installation required.
 For multiple substitutions and insertions/deletions, see [UniStab](https://github.com/xlab-BioAI/UniStab).
-Batch prediction here means independent single substitutions, not a combined mutant.
 
 ![Model architecture](assets/model.png)
 
 ## Quick start
 
-The supported reference environment is Linux, Python 3.7.12 and PyTorch 1.13.1.
-This release retains the original model/runtime versions where available.
-The historical `fair-esm==2.0.1` export is replaced by the installable
-`fair-esm==2.0.0` release, with real-weight regression checks. CUDA is
-optional: CPU inference works but is slower. The model has substantial memory
-requirements; GPU memory depends on sequence length. No training datasets are
-needed for prediction.
+Use Linux with Python 3.7.12 and PyTorch 1.13.1. Prediction runs on CUDA or CPU
+and requires the model weights below. GPU memory usage depends on sequence length.
 
 ```bash
 git clone https://github.com/xtanh/ProStab.git
@@ -44,7 +38,7 @@ prostab predict --model-dir model_weight \
 
 The command prints a JSON record with `ddg`, `status`, and the input identifiers.
 With the supplied checkpoint, the reference CUDA result for V1A is approximately
-`0.1232584`. Small device-dependent numerical differences are possible.
+`0.1232584`.
 
 ## Weights
 
@@ -67,8 +61,7 @@ data/checkpoints/ThermoMPNN/vanilla_model_weights/v_48_020.pt
 For offline use, prepare ESM's cached files beforehand or pass `--esm-weights`
 with the local model `.pt` path. Keep `esm2_t33_650M_UR50D-contact-regression.pt`
 in the same directory. `--mpnn-weights` overrides the ProteinMPNN location.
-`--model-dir` points to the ProStab directory above, not directly to the checkpoint.
-Only load trusted checkpoint files.
+`--model-dir` points to the ProStab directory shown above.
 
 For example, from any working directory after installation:
 
@@ -80,8 +73,7 @@ prostab predict --model-dir /path/to/ProStab/model_weight \
 ```
 
 `--device auto` (default) uses CUDA when available, otherwise CPU. Use `--device cpu`
-to force CPU or `--device cuda:N` for a specific visible GPU. An unavailable requested
-device is an error, rather than a silent fallback.
+to select CPU or `--device cuda:N` for a specific visible GPU.
 
 ## Batch predictions
 
@@ -90,13 +82,13 @@ prostab predict-batch --model-dir model_weight \
   --input examples/mutations.csv --output predictions.csv
 ```
 
-Input columns are `pdb_path,chain,mutation`; each row may refer to a different PDB
-or chain. Relative PDB paths are resolved against the **input CSV's directory**.
+Each row describes an independent single substitution, with columns
+`pdb_path,chain,mutation`. Rows may refer to different PDB files or chains.
+Relative PDB paths are resolved against the **input CSV's directory**.
 The model is loaded once and rows are evaluated sequentially. Results retain input
-order and these three columns, plus `ddg,status,error`. Invalid rows have an empty `ddg` and an
-error message; other rows continue. Exit status is 0 for all-success and 1 if any
-row fails. Existing output files are never overwritten. Fatal setup errors, such
-as missing weights, stop the command before prediction.
+order and these three columns, plus `ddg,status,error`. Invalid rows have an empty
+`ddg` and an error message; other rows continue. Exit status is 0 for all-success and 1 if any
+row fails. Choose a new filename for each output CSV.
 
 ## Python API
 
@@ -122,21 +114,14 @@ available in `prostab.inference`.
 ## Inputs and interpretation
 
 - Use the **wild-type structure**, one PDB chain, and a substitution such as `V1A`.
-- Positions are original PDB residue identifiers, not sequence offsets. `G42AS`
+- Use original PDB residue identifiers for positions. `G42AS`
   means glycine at residue `42A` (insertion code A) becomes serine. Negative residue
   numbers are supported. Chain IDs are case-sensitive; use a single space for a
   blank PDB chain ID.
-- The wild-type amino acid must match the structure. Missing positions, incomplete
-  backbone coordinates at the mutation site, unsupported amino acids and combined
-  mutations are rejected. Numbering gaps are retained when mapping residues.
+- The mutation site needs a matching wild-type amino acid and complete backbone
+  coordinates (N, CA, C, O). Use standard one-letter amino-acid codes.
 - ΔΔG is reported in **kcal/mol**: negative predicts increased stability; positive
-  predicts decreased stability, following the existing ProStab server convention.
-
-**Behavior corrections:** model loading now selects evaluation mode and the
-high-level API disables autograd. Earlier notebook/README examples could leave
-Dropout active, so their outputs may differ. Missing residues now raise an error
-instead of silently substituting position zero. Core checkpoint parameters must
-all match; incompatible checkpoints are rejected.
+  predicts decreased stability.
 
 ## Troubleshooting
 
@@ -145,12 +130,10 @@ all match; incompatible checkpoints are rejected.
 - **ESM download fails:** prepare both ESM files on a connected machine, then use
   `--esm-weights` or a populated `TORCH_HOME` cache.
 - **CUDA unavailable/out of memory:** select another visible GPU or use CPU.
-  Independent batch rows do not require loading multiple models.
 - **Wild-type mismatch or missing position:** inspect the PDB chain, original
-  residue number and insertion code; do not renumber mutations as sequence offsets.
-- **Dependency resolution:** use the pinned environment rather than upgrading
-  PyTorch/Lightning in place. `environment-legacy.yml` preserves the historical full
-  environment export (including its old machine-specific prefix) for reference only.
+  residue number and insertion code.
+- **Dependency resolution:** install with `environment.yml`. The full historical
+  environment is saved in `environment-legacy.yml`.
 
 ## Development and existing training code
 
@@ -163,9 +146,7 @@ PROSTAB_RUN_INTEGRATION=1 python -m pytest -m integration
 
 Training and evaluation entrypoints remain `train.py` and `test.py`; install
 `pip install -e '.[train]'` with pip 23.3.2 to use the original training dependencies.
-This update does not reproduce the paper's datasets or training runs. Training
-requires the original data and configuration. Web deployment is maintained
-separately; the local CLI/API do not call or modify the online service.
+Training requires the original data and configuration.
 
 ## 📄 License
 
@@ -175,19 +156,13 @@ This project builds heavily upon **SPURS**. Please refer to their [original lice
 
 We gratefully acknowledge the following projects and contributions that made ProStab possible:
 
-### Foundation Framework
-**Important Note**: This project is significantly based on the **SPURS** framework. We gratefully acknowledge that:
-
-- **Benchmark Datasets**: All evaluation datasets originate from SPURS
-- **Training Strategy**: Our training methodology follows SPURS protocols  
-- **Evaluation Framework**: Assessment metrics and procedures are consistent with SPURS
-- **Code Foundation**: The training and evaluation framework is built upon SPURS
-
-We sincerely thank the SPURS team for providing an extensible training, evaluation, and modeling framework that enabled this research.
+The training and evaluation pipelines, datasets, configurations, baselines and
+metrics are adapted from [SPURS](https://github.com/luo-group/SPURS).
+We thank the SPURS team for their code, data, feedback and guidance.
 
 ### Key Components
 - **SPURS**: Foundational framework from [Luo Group](https://github.com/luo-group/SPURS/tree/main)
-- **ProMEP**: Transformer encoder fuse strutural information and sequence information [Cheng et al](https://github.com/wenjiegroup/ProMEP)
+- **ProMEP**: Transformer-based fusion of structural and sequence information [Cheng et al](https://github.com/wenjiegroup/ProMEP)
 - **ESM**: Protein language models from [Meta AI](https://github.com/facebookresearch/esm)
 - **ProteinMPNN**: Inverse folding model from [Dauparas et al.](https://github.com/dauparas/ProteinMPNN)
 
