@@ -1,0 +1,3 @@
+pdb_path,chain,mutation
+../data/inference_example/1A0N.pdb,A,V1A
+../data/inference_example/1A0N.pdb,A,P57A

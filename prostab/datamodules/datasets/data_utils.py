@@ -13,7 +13,7 @@ from typing import (Any, Callable, Iterator, List, Sequence, Tuple, TypeVar,
 import esm
 import numpy as np
 import torch
-from pytorch_lightning.utilities.seed import seed_everything
+from prostab.utils import seed_everything
 from torch import distributed as dist
 from torch import nn
 from torch.utils.data import DataChunk
@@ -69,7 +69,7 @@ class Alphabet(object):
                               to_pifold_format=kwds.get('to_pifold_format', False),
                               coord_nan_to_zero=kwds.get('coord_nan_to_zero', True))
         elif name == 'megascale':
-            from .megascale import Featurizer
+            from .featurizer import Featurizer
             return Featurizer(alphabet=self, 
                               to_pifold_format=kwds.get('to_pifold_format', False),
                               coord_nan_to_zero=kwds.get('coord_nan_to_zero', True),

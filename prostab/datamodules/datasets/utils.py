@@ -1,9 +1,5 @@
-import lmdb
 from tqdm import tqdm
-from atom3d.datasets import LMDBDataset
-import lmdb
-import pickle 
-from tqdm import tqdm
+import pickle
 import numpy as np
 import glob
 import os
@@ -530,19 +526,16 @@ def alt_parse_PDB_biounits(x, atoms=['N', 'CA', 'C'], chain=None):
     aa_3_1 = {b: a for a, b in zip(alpha_1, alpha_3)}
 
     def AA_to_N(x):
-        # ["ARND"] -> [[0,1,2,3]]
         x = np.array(x);
         if x.ndim == 0: x = x[None]
         return [[aa_1_N.get(a, states - 1) for a in y] for y in x]
 
     def N_to_AA(x):
-        # [[0,1,2,3]] -> ["ARND"]
         x = np.array(x);
         if x.ndim == 1: x = x[None]
         return ["".join([aa_N_1.get(a, "-") for a in y]) for y in x]
 
     xyz, seq, min_resn, max_resn = {}, {}, 1e6, -1e6
-    resn_list = []
     for line in open(x, "rb"):
         line = line.decode("utf-8", "ignore").rstrip()
 
@@ -556,9 +549,6 @@ def alt_parse_PDB_biounits(x, atoms=['N', 'CA', 'C'], chain=None):
                 atom = line[12:12 + 4].strip()
                 resi = line[17:17 + 3]
                 resn = line[22:22 + 5].strip()
-                # RAW resn is defined HERE
-                if resn not in resn_list:
-                  resn_list.append(resn) # NEED to keep ins code here
                 x, y, z = [float(line[i:(i + 8)]) for i in [30, 38, 46]]
                 if resn[-1].isalpha():
                     resa, resn = resn[-1], int(resn[:-1]) - 1
@@ -579,23 +569,18 @@ def alt_parse_PDB_biounits(x, atoms=['N', 'CA', 'C'], chain=None):
 
                 if atom not in xyz[resn][resa]:
                     xyz[resn][resa][atom] = np.array([x, y, z])
-                # print(resn_list)
-    # convert to numpy arrays, fill in missing values
     seq_, xyz_ = [], []
-    # print(seq)
+    # Keep identifiers aligned with padded coordinates, including numbering gaps.
+    aligned_resn = []
     try:
         for resn in range(min_resn, max_resn + 1):
             if resn in seq:
-              # CLEANED resn is defined HERE
-                # resn_list.append(str(resn + 1))
-                # print(resn)
-                for k in sorted(seq[resn]): seq_.append(aa_3_N.get(seq[resn][k], 20))
+                for k in sorted(seq[resn]):
+                    seq_.append(aa_3_N.get(seq[resn][k], 20))
+                    aligned_resn.append(str(resn + 1) + k)
             else:
                 seq_.append(20)
-                # if str(resn - 1) not in resn_list:
-                  # print(resn, '**')
-                # resn_list.append('DASH')
-            # print(resn, resn_list[-1])
+                aligned_resn.append(None)
             if resn in xyz:
                 for k in sorted(xyz[resn]):
                     for atom in atoms:
@@ -605,8 +590,7 @@ def alt_parse_PDB_biounits(x, atoms=['N', 'CA', 'C'], chain=None):
                             xyz_.append(np.full(3, np.nan))
             else:
                 for atom in atoms: xyz_.append(np.full(3, np.nan))
-        # assert len(seq_) == len(list(dict.fromkeys(resn_list)))
-        return np.array(xyz_).reshape(-1, len(atoms), 3), N_to_AA(np.array(seq_)), list(dict.fromkeys(resn_list))
+        return np.array(xyz_).reshape(-1, len(atoms), 3), N_to_AA(np.array(seq_)), aligned_resn
     except TypeError:
         return 'no_chain', 'no_chain', 'no_chain'
 
@@ -648,12 +632,6 @@ def alt_parse_PDB(path_to_pdb, input_chain_list=None, ca_only=False, side_chains
                 sidechain_atoms = ['N', 'CA', 'C', 'O']
             xyz, seq, resn_list = alt_parse_PDB_biounits(biounit, atoms=sidechain_atoms, chain=letter)
 
-            # add chain resn set to list if exists
-            # new for multi-chain handling
-            # if len(resn_list) > 7:
-            #     check_chain = ''.join(resn_list[:8])
-            #     if check_chain != 'no_chain':
-            #         my_dict['resn_list'] += resn_list
 
             if type(xyz) != str:
                 concat_seq += seq[0]
@@ -673,7 +651,6 @@ def alt_parse_PDB(path_to_pdb, input_chain_list=None, ca_only=False, side_chains
         my_dict['num_of_chains'] = s
         my_dict['seq'] = concat_seq
 
-        # old handling for resn lists
         my_dict['resn_list'] = list(resn_list)
         if s <= len(chain_alphabet):
             pdb_dict_list.append(my_dict)

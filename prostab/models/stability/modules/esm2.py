@@ -32,9 +32,12 @@ log = utils.get_logger(__name__)
 
 class ESM2(nn.Module):
     @classmethod
-    def from_pretrained(cls, args, override_args=None, name='esm2_t33_650M_UR50D',ret_alphabet=False):
+    def from_pretrained(cls, args, override_args=None, name='esm2_t33_650M_UR50D',ret_alphabet=False, weights_path=None):
         import esm
-        pretrained_model, alphabet = esm.pretrained.load_model_and_alphabet_hub(name)
+        if weights_path is None:
+            pretrained_model, alphabet = esm.pretrained.load_model_and_alphabet_hub(name)
+        else:
+            pretrained_model, alphabet = esm.pretrained.load_model_and_alphabet_local(weights_path)
 
         pretrained_args = Cfg(
             num_layers=pretrained_model.num_layers, 

@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+build/
+dist/
+.DS_Store
+._*
+.codex
+logs/
+checkpoints/
+data/checkpoints/
+model_weight/checkpoints/
+baselines/
+revision/
+*.log
+# Local datasets downloaded separately from the published repository.
+data/dataset/Domainome/Supplementary_Table_5_aPCA_vs_variant_effect_predictors.csv
+data/dataset/geostab_data/dms/dms.csv
+data/dataset/megascale/Tsuboyama2023_Dataset2_Dataset3_20230416.csv

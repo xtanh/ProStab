@@ -1508,13 +1508,13 @@ MLP = True
 SUBTRACT_MUT = True
 
 
-def get_protein_mpnn(version='v_48_020.pt',tune=False):
+def get_protein_mpnn(version='v_48_020.pt', tune=False, checkpoint_path=None):
     """Loading Pre-trained ProteinMPNN model for structure embeddings"""
     hidden_dim = 128
     num_layers = 3 
     current_dir = os.path.dirname(os.path.realpath(__file__))
     model_weight_dir = os.path.join(current_dir,'../../../data/checkpoints/ThermoMPNN/vanilla_model_weights')
-    checkpoint_path = os.path.join(model_weight_dir, version)
+    checkpoint_path = checkpoint_path or os.path.join(model_weight_dir, version)
     # checkpoint_path = "vanilla_model_weights/v_48_020.pt"
     checkpoint = torch.load(checkpoint_path, map_location='cpu') 
     model = ProteinMPNN(ca_only=False, num_letters=21, node_features=hidden_dim, edge_features=hidden_dim, hidden_dim=hidden_dim, 
@@ -1522,26 +1522,10 @@ def get_protein_mpnn(version='v_48_020.pt',tune=False):
 
     model.load_state_dict(checkpoint['model_state_dict'])
     
+    model.train(tune)
     if not tune:
-        model.eval()
-        # freeze these weights for transfer learning
         for param in model.parameters():
             param.requires_grad = False
-    else:
-        # for param in model.parameters():
-        #     param.requires_grad = False
-        # model.eval()
-        # model.W_s.train()
-        # model.W_s.requires_grad = True
-        # model.decoder_layers.train()
-        # model.decoder_layers.requires_grad = True
-        if not tune:
-            model.eval()
-            # freeze these weights for transfer learning
-            for param in model.parameters():
-                param.requires_grad = False
-        else:
-            model.train()
 
     return model
 

@@ -1,10 +1,4 @@
-import importlib
-from omegaconf import DictConfig
-import os
-import glob
-
-from prostab.utils import import_modules
-
+"""Registration without eager loading of optional modules."""
 DATAMODULE_REGISTRY = {}
 
 
@@ -13,6 +7,3 @@ def register_datamodule(name):
         DATAMODULE_REGISTRY[name] = cls
         return cls
     return decorator
-
-
-import_modules(os.path.dirname(__file__), "prostab.datamodules")

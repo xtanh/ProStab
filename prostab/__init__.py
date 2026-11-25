@@ -1,6 +1,9 @@
-# some code adated from https://github.com/BytedProtein/ByProt and https://github.com/ashleve/lightning-hydra-template
-# most of the code is from spurs(https://github.com/luo-group/SPURS)
-import prostab.models
-import prostab.tasks
-import prostab.utils
-import prostab.datamodules
+"""ProStab: protein stability prediction for single substitutions."""
+__version__ = "0.1.0"
+
+
+def __getattr__(name):
+    if name == "Predictor":
+        from .inference import Predictor
+        return Predictor
+    raise AttributeError(name)

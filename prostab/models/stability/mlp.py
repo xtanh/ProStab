@@ -22,23 +22,13 @@ class MLPConfig:
     ckpt_path: str = ''
     append_tensors: bool = True
     flat_dim: int = -1
-    
-    
+
+
 @register_model('mlp')
 class MLP(BaseModel):
     _default_cfg = MLPConfig()
     def __init__(self, cfg) -> None:
         super().__init__(cfg)
-        # self.fc1 = nn.Linear(input_dim, hidden_dim)
-        # self.fc2 = nn.Linear(hidden_dim, output_dim)
-        # self.dropout = nn.Dropout(dropout)
-        # self.relu = nn.ReLU()
-        
-        # self.fcs = nn.ModuleList(
-        #     [nn.Linear(input_dim, hidden_dim, bias=True)] + [nn.Linear(hidden_dim, hidden_dim, bias=True) for _ in range(num_layers-2)] + [nn.Linear(hidden_dim, output_dim, bias=True)]
-        # )
-        # num_layers = 3, input_dim = 128, hidden_dim=[128,128], output_dim = 128, dropout=0.1, ckpt_path=None
-        # num_layers = self.cfg.num_layers
         input_dim = self.cfg.input_dim
         hidden_dim = self.cfg.hidden_dim if isinstance(self.cfg.hidden_dim, list) else [self.cfg.hidden_dim]*3
         num_layers = len(hidden_dim)+1
@@ -47,27 +37,26 @@ class MLP(BaseModel):
         ckpt_path = self.cfg.ckpt_path
         self.append_tensors = self.cfg.append_tensors
         assert len(hidden_dim)==num_layers-1
-        
+
         self.fcs = nn.ModuleList(
             [nn.Linear(input_dim, hidden_dim[0], bias=True)] + [nn.Linear(hidden_dim[i], hidden_dim[i+1], bias=True) for i in range(num_layers-2)] + [nn.Linear(hidden_dim[-1], output_dim, bias=True)]
         )
-        self.dropouts = nn.ModuleList( 
+        self.dropouts = nn.ModuleList(
             [nn.Dropout(dropout) for _ in range(num_layers-1)]
-        ) 
-        
-        self.device = torch.device("cuda:0" if (torch.cuda.is_available()) else "cpu")
-        self.to(self.device)
+        )
+
+        self.device = torch.device("cpu")
         self.initialize_weights(ckpt_path)
-        
+
     def initialize_weights(self,ckpt_path=''):
-        if ckpt_path is '':
+        if ckpt_path == '':
             for m in self.modules():
                 if isinstance(m, nn.Linear):
                     nn.init.xavier_uniform_(m.weight)
                     if m.bias is not None:
                         nn.init.zeros_(m.bias)
         else:
-            checkpoint = torch.load(ckpt_path, map_location=self.device) 
+            checkpoint = torch.load(ckpt_path, map_location=self.device)
             self.load_state_dict(checkpoint)
             # print("MLP model loaded from checkpoint: {}".format(ckpt_path))
 

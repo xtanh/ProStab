@@ -1,4 +1,12 @@
 # https://github.com/BytedProtein/ByProt/blob/dd279dc85f76ee2c28c819b71bf3911b90159f0a/src/byprot/utils/registry.py
+from prostab.utils import import_modules
+import prostab.datamodules
+import prostab.models
+from pathlib import Path
+
+for package in (prostab.models, prostab.datamodules):
+    import_modules(str(Path(package.__file__).parent), package.__name__)
+
 from prostab.datamodules import DATAMODULE_REGISTRY
 from prostab.models import MODEL_REGISTRY
 from prostab.tasks import TASK_REGISTRY

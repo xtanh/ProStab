@@ -1,104 +1,171 @@
-# ProStab: Prediction of protein stability change upon mutations by inverse folding and protein language models
-![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white)
-![Lightning](https://img.shields.io/badge/Lightning-792EE5?logo=lightning&logoColor=white)
-[![arXiv](https://img.shields.io/badge/arXiv-25-B31B1B)](https://www.biorxiv.org/content/10.1101/2025.08.11.669595v1)
-[![Hydra](https://img.shields.io/badge/Hydra-1e90ff?logo=dropbox&logoColor=white)](https://github.com/facebookresearch/hydra)
+# ProStab
 
-## News
+Predict protein stability changes (ΔΔG) for **single amino-acid substitutions**
+using a wild-type PDB structure, ProteinMPNN and ESM2 representations.
 
- **Protein stability prediction for multiple mutations and indels (insert and delete) is now available: [UniStab](https://github.com/xlab-BioAI/UniStab).** 
-[ProStab web server](https://ails.sjtu.edu.cn/prostab/)
+**[Use the online server](https://ails.sjtu.edu.cn/prostab/)** — no local installation required.
+For multiple substitutions and insertions/deletions, see [UniStab](https://github.com/xlab-BioAI/UniStab).
+Batch prediction here means independent single substitutions, not a combined mutant.
 
-## Acknowledgements
-We sincerely thank the SPURS team for open-sourcing their code and data to the community, and we are grateful to the SPURS team for providing invaluable constructive feedback and guidance throughout this work.
+![Model architecture](assets/model.png)
 
-ProStab project builds heavily off of [SPURS](https://github.com/luo-group/SPURS/tree/main), and the training pipeline, test pipeline,
-dataset, configs, baselines, and metrics implementation were adapted from SPURS
+## Quick start
 
-
-## Overview
-
-ProStab, a deep learning framework that integrates sequence-derived and structure-informed features for accurate prediction of ∆∆G for protein point mutations given an initial structure. ProStab combines representations from a protein language model applied to both wild-type and mutant sequences, and from the inverse folding model ProteinMPNN applied to the wild-type structure. It jointly models two sources of information: mutation-specific effects, captured as embedding differences at the substitution site between wild-type and mutant sequences; and site-specific priors, derived from the wild-type sequence and structure, which reflect the local context and substitutional tolerance.
-
-![Model Architecture](assets/model.png)
-
-
-## Web server
-[ProStab web server](https://ails.sjtu.edu.cn/prostab/)
-
-⭐ **If you find ProStab useful, please star this repository!** ⭐
-
-⭐ **Ongoing updates will keep making this web server easier and more convenient to use.** ⭐
-
-⭐ **We encourage users of our web server to cite both ProStab and SPURS in recognition of the foundational framework and valuable collaborative insights provided by the SPURS team** ⭐
-
-## Installation
+The supported reference environment is Linux, Python 3.7.12 and PyTorch 1.13.1.
+This release retains the original model/runtime versions where available.
+The historical `fair-esm==2.0.1` export is replaced by the installable
+`fair-esm==2.0.0` release, with real-weight regression checks. CUDA is
+optional: CPU inference works but is slower. The model has substantial memory
+requirements; GPU memory depends on sequence length. No training datasets are
+needed for prediction.
 
 ```bash
 git clone https://github.com/xtanh/ProStab.git
 cd ProStab
-# Add installation steps if needed
-```
-
-## Requirements
-
-```bash
 conda env create -f environment.yml
 conda activate ProStab
 ```
 
-## Downloading weights and data
-
-1. Download pre-trained weights from: [https://drive.google.com/file/d/1xZOG3wkn6UGJS_j533laRbZLWV5DU13T/view?usp=share_link]
-2. Extract and place in `model_weight/checkpoints/`
+Run environment creation from the repository root: it installs the package with
+`pip install -e .`. For an existing compatible Python environment:
 
 ```bash
-mkdir -p model_weight/checkpoints
-# Place downloaded best.ckpt in model_weight/checkpoints/
+python -m pip install 'pip==23.3.2'
+python -m pip install -e .
+prostab --help
 ```
 
-**ProteinMPNN Weights**
-1. Download ProteinMPNN weights: `v_48_020.pt` from [ProteinMPNN GitHub](https://github.com/dauparas/ProteinMPNN)
-2. Create the directory and place the file:
-```bash
-mkdir -p ./data/checkpoints/ThermoMPNN/vanilla_model_weights
-# Place v_48_020.pt in ./data/checkpoints/ThermoMPNN/vanilla_model_weights/
-```
-
-### Testing
+Prepare the weights below, then run:
 
 ```bash
-python test.py experiment_path=model_weight  datamodule._target_=megascale data_split=test ckpt_path=model_weight/checkpoints/best.ckpt  mode=predict
+prostab predict --model-dir model_weight \
+  --pdb data/inference_example/1A0N.pdb --chain A --mutation V1A
 ```
 
+The command prints a JSON record with `ddg`, `status`, and the input identifiers.
+With the supplied checkpoint, the reference CUDA result for V1A is approximately
+`0.1232584`. Small device-dependent numerical differences are possible.
 
-### Training
+## Weights
+
+1. Download the [ProStab checkpoint](https://drive.google.com/file/d/1xZOG3wkn6UGJS_j533laRbZLWV5DU13T/view).
+   Extract it if needed and put `best.ckpt` in `model_weight/checkpoints/`.
+   Keep the matching configuration already included at `model_weight/.hydra/config.yaml`.
+2. Download [ProteinMPNN v_48_020.pt](https://github.com/dauparas/ProteinMPNN/blob/main/vanilla_model_weights/v_48_020.pt)
+   and put it in `data/checkpoints/ThermoMPNN/vanilla_model_weights/`.
+3. ESM automatically downloads `esm2_t33_650M_UR50D.pt` and its contact regression
+   companion on the first model load. Torch Hub normally caches these under
+   `~/.cache/torch/hub/checkpoints/`; set `TORCH_HOME` to choose another cache location.
+
+```text
+model_weight/
+  .hydra/config.yaml
+  checkpoints/best.ckpt
+data/checkpoints/ThermoMPNN/vanilla_model_weights/v_48_020.pt
+```
+
+For offline use, prepare ESM's cached files beforehand or pass `--esm-weights`
+with the local model `.pt` path. Keep `esm2_t33_650M_UR50D-contact-regression.pt`
+in the same directory. `--mpnn-weights` overrides the ProteinMPNN location.
+`--model-dir` points to the ProStab directory above, not directly to the checkpoint.
+Only load trusted checkpoint files.
+
+For example, from any working directory after installation:
 
 ```bash
-python train.py 
+prostab predict --model-dir /path/to/ProStab/model_weight \
+  --mpnn-weights /path/to/v_48_020.pt \
+  --esm-weights /path/to/esm2_t33_650M_UR50D.pt \
+  --pdb /path/to/structure.pdb --chain A --mutation V1A --device cuda:0
 ```
 
-### Inference
+`--device auto` (default) uses CUDA when available, otherwise CPU. Use `--device cpu`
+to force CPU or `--device cuda:N` for a specific visible GPU. An unavailable requested
+device is an error, rather than a silent fallback.
+
+## Batch predictions
 
 ```bash
-from prostab.inference import  parse_pdb, get_prostab
-model, cfg = get_prostab('./model_weight')
-pdb_name = 'example'
-pdb_path = '/home/xy_th/PROSTAB/data/inference_example/1A0N.pdb'
-chain = 'A'
-mutation = "V1A"  
-pdb_mut = parse_pdb(pdb_path, pdb_name, chain, cfg, mutation=mutation)
-result_mutant = model(pdb_mut, return_logist=True)
-print(f"mutation {mutation} score: {result_mutant.item()}")
+prostab predict-batch --model-dir model_weight \
+  --input examples/mutations.csv --output predictions.csv
 ```
 
-## Data
+Input columns are `pdb_path,chain,mutation`; each row may refer to a different PDB
+or chain. Relative PDB paths are resolved against the **input CSV's directory**.
+The model is loaded once and rows are evaluated sequentially. Results retain input
+order and these three columns, plus `ddg,status,error`. Invalid rows have an empty `ddg` and an
+error message; other rows continue. Exit status is 0 for all-success and 1 if any
+row fails. Existing output files are never overwritten. Fatal setup errors, such
+as missing weights, stop the command before prediction.
 
-Required data files (not included in repository):
-<!-- - `data/dataset/megascale/Tsuboyama2023_Dataset2_Dataset3_20230416.csv`
-- `data/dataset/Domainome/Supplementary_Table_5_aPCA_vs_variant_effect_predictors.csv`
-- `data/dataset/geostab_data/dms/dms.csv` -->
+## Python API
 
+```python
+from prostab import Predictor
+
+predictor = Predictor(model_dir="model_weight", device="auto")
+value = predictor.predict("data/inference_example/1A0N.pdb", "A", "V1A")
+print(value)
+
+results = predictor.predict_many(
+    "data/inference_example/1A0N.pdb", "A", ["V1A", "P57A"]
+)
+# Ordered dictionaries: pdb_path, chain, mutation, ddg, status, error.
+```
+
+`Predictor` also accepts `mpnn_weights=` and `esm_weights=`. Single prediction
+raises an exception on invalid input; `predict_many` records individual failures
+with `ddg=None`. See [inference.ipynb](inference.ipynb) for an executable example.
+The original `get_prostab(...) -> (model, cfg)` and `parse_pdb(...)` calls remain
+available in `prostab.inference`.
+
+## Inputs and interpretation
+
+- Use the **wild-type structure**, one PDB chain, and a substitution such as `V1A`.
+- Positions are original PDB residue identifiers, not sequence offsets. `G42AS`
+  means glycine at residue `42A` (insertion code A) becomes serine. Negative residue
+  numbers are supported. Chain IDs are case-sensitive; use a single space for a
+  blank PDB chain ID.
+- The wild-type amino acid must match the structure. Missing positions, incomplete
+  backbone coordinates at the mutation site, unsupported amino acids and combined
+  mutations are rejected. Numbering gaps are retained when mapping residues.
+- ΔΔG is reported in **kcal/mol**: negative predicts increased stability; positive
+  predicts decreased stability, following the existing ProStab server convention.
+
+**Behavior corrections:** model loading now selects evaluation mode and the
+high-level API disables autograd. Earlier notebook/README examples could leave
+Dropout active, so their outputs may differ. Missing residues now raise an error
+instead of silently substituting position zero. Core checkpoint parameters must
+all match; incompatible checkpoints are rejected.
+
+## Troubleshooting
+
+- **Missing checkpoint/config:** check the directory layout above and explicitly
+  supply paths when working outside the checkout.
+- **ESM download fails:** prepare both ESM files on a connected machine, then use
+  `--esm-weights` or a populated `TORCH_HOME` cache.
+- **CUDA unavailable/out of memory:** select another visible GPU or use CPU.
+  Independent batch rows do not require loading multiple models.
+- **Wild-type mismatch or missing position:** inspect the PDB chain, original
+  residue number and insertion code; do not renumber mutations as sequence offsets.
+- **Dependency resolution:** use the pinned environment rather than upgrading
+  PyTorch/Lightning in place. `environment-legacy.yml` preserves the historical full
+  environment export (including its old machine-specific prefix) for reference only.
+
+## Development and existing training code
+
+```bash
+python -m pip install -e '.[dev]'
+python -m pytest -m 'not integration'
+# Optional real-weight tests; ESM must already be cached or PROSTAB_ESM_WEIGHTS set.
+PROSTAB_RUN_INTEGRATION=1 python -m pytest -m integration
+```
+
+Training and evaluation entrypoints remain `train.py` and `test.py`; install
+`pip install -e '.[train]'` with pip 23.3.2 to use the original training dependencies.
+This update does not reproduce the paper's datasets or training runs. Training
+requires the original data and configuration. Web deployment is maintained
+separately; the local CLI/API do not call or modify the online service.
 
 ## 📄 License
 
