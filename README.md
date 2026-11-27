@@ -31,9 +31,9 @@ with ESM2 sequence representations.
 
 | Interface | Get started |
 | --- | --- |
-| 🌐 **Web server** | [Upload a structure and predict online](https://ails.sjtu.edu.cn/prostab/) |
-| 💻 **Command line** | [Run a single prediction](#quick-start) or [process a CSV](#batch-predictions) |
-| 🐍 **Python** | [Use ProStab in your own scripts](#python-api) |
+| **Web server** | [Upload a structure and predict online](https://ails.sjtu.edu.cn/prostab/) |
+| **Command line** | [Run a single prediction](#quick-start) or [process a CSV](#batch-predictions) |
+| **Python** | [Use ProStab in your own scripts](#python-api) |
 
 > **Explore UniStab:** for multiple substitutions and insertions/deletions,
 > see [our related project](https://github.com/xlab-BioAI/UniStab).
